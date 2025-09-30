@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: coco-demo-04
+  namespace: default
+  annotations:
+    io.containerd.cri.runtime-handler: "kata-qemu-coco-dev"
+    io.katacontainers.config.hypervisor.kernel_params: " agent.aa_kbc_params=cc_kbc::http://${KBS_HOST}:${KBS_PORT}"
+spec:
+  runtimeClassName: kata-qemu-coco-dev
+  containers:
+    - name: busybox
+      image: busybox:stable-uclibc
+      imagePullPolicy: Always
+      command:
+        - sh
+        - -c
+        - |
+          wget -O- http://127.0.0.1:8006/cdh/resource/default/secret/1; sleep infinity   
+  restartPolicy: Never
+...

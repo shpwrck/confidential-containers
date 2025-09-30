@@ -1,0 +1,141 @@
+---
+apiVersion: confidentialcontainers.org/v1beta1
+kind: CcRuntime
+metadata:
+  name: ccruntime-sample
+spec:
+  ccNodeSelector:
+    matchLabels:
+      node.kubernetes.io/worker: ""
+  config:
+    cleanupCmd:
+    - /opt/kata-artifacts/scripts/kata-deploy.sh
+    - reset
+    defaultRuntimeClassName: kata-qemu
+    environmentVariables:
+    - name: INSTALL_OFFICIAL_CONTAINERD
+      value: "false"
+    installCmd:
+    - /opt/kata-artifacts/scripts/kata-deploy.sh
+    - install
+    installDoneLabel:
+      katacontainers.io/kata-runtime: "true"
+    installType: bundle
+    installerVolumeMounts:
+    - mountPath: /etc/crio/
+      name: crio-conf
+    - mountPath: /etc/containerd/
+      name: containerd-conf
+    - mountPath: /usr/local/bin/
+      name: local-bin
+    - mountPath: /host/
+      name: host
+    installerVolumes:
+    - hostPath:
+        path: /etc/crio/
+        type: ""
+      name: crio-conf
+    - hostPath:
+        path: /etc/containerd/
+        type: ""
+      name: containerd-conf
+    - hostPath:
+        path: /usr/local/bin/
+        type: ""
+      name: local-bin
+    - hostPath:
+        path: /
+        type: ""
+      name: host
+    payloadImage: quay.io/kata-containers/kata-deploy:3.17.0
+    postUninstall:
+      image: quay.io/confidential-containers/reqs-payload:4ad2b8ea64b919d977b1d3fab488333283ea05d9
+      volumeMounts:
+      - mountPath: /opt/confidential-containers/
+        name: confidential-containers-artifacts
+      - mountPath: /etc/systemd/system/
+        name: etc-systemd-system
+      - mountPath: /etc/containerd/
+        name: containerd-conf
+      - mountPath: /usr/local/bin/
+        name: local-bin
+      - mountPath: /var/lib/containerd-nydus/
+        name: containerd-nydus
+      volumes:
+      - hostPath:
+          path: /opt/confidential-containers/
+          type: DirectoryOrCreate
+        name: confidential-containers-artifacts
+      - hostPath:
+          path: /etc/systemd/system/
+          type: ""
+        name: etc-systemd-system
+      - hostPath:
+          path: /etc/containerd/
+          type: ""
+        name: containerd-conf
+      - hostPath:
+          path: /usr/local/bin/
+          type: ""
+        name: local-bin
+      - hostPath:
+          path: /var/lib/containerd-nydus/
+          type: ""
+        name: containerd-nydus
+    preInstall:
+      image: quay.io/confidential-containers/reqs-payload:4ad2b8ea64b919d977b1d3fab488333283ea05d9
+      volumeMounts:
+      - mountPath: /opt/confidential-containers/
+        name: confidential-containers-artifacts
+      - mountPath: /etc/systemd/system/
+        name: etc-systemd-system
+      - mountPath: /etc/containerd/
+        name: containerd-conf
+      - mountPath: /usr/local/bin/
+        name: local-bin
+      - mountPath: /var/lib/containerd-nydus/
+        name: containerd-nydus
+      volumes:
+      - hostPath:
+          path: /opt/confidential-containers/
+          type: DirectoryOrCreate
+        name: confidential-containers-artifacts
+      - hostPath:
+          path: /etc/systemd/system/
+          type: ""
+        name: etc-systemd-system
+      - hostPath:
+          path: /etc/containerd/
+          type: ""
+        name: containerd-conf
+      - hostPath:
+          path: /usr/local/bin/
+          type: ""
+        name: local-bin
+      - hostPath:
+          path: /var/lib/containerd-nydus/
+          type: ""
+        name: containerd-nydus
+    runtimeClasses:
+    - name: kata-clh
+      pulltype: ""
+      snapshotter: ""
+    - name: kata-qemu
+      pulltype: ""
+      snapshotter: ""
+    - name: kata-qemu-coco-dev
+      pulltype: guest-pull
+      snapshotter: nydus
+    - name: kata-qemu-tdx
+      pulltype: guest-pull
+      snapshotter: nydus
+    - name: kata-qemu-snp
+      pulltype: guest-pull
+      snapshotter: nydus
+    uninstallCmd:
+    - /opt/kata-artifacts/scripts/kata-deploy.sh
+    - cleanup
+    uninstallDoneLabel:
+      katacontainers.io/kata-runtime: cleanup
+  runtimeName: kata
+...

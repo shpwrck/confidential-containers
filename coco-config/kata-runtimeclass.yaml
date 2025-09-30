@@ -1,0 +1,14 @@
+---
+apiVersion: node.k8s.io/v1
+handler: kata-qemu-coco-dev
+kind: RuntimeClass
+metadata:
+  name: kata-qemu-coco-dev
+overhead:
+  podFixed:
+    cpu: 250m
+    memory: 160Mi
+scheduling:
+  nodeSelector:
+    katacontainers.io/kata-runtime: "true"
+...
