@@ -146,3 +146,5 @@ Example: `secret seal vault --resource-uri default/secret/1 --provider kbs`
 ## Notes
 
 The original inspiration for this content is [here](https://confidentialcontainers.org/blog/2024/12/03/confidential-containers-without-confidential-hardware/)
+
+As the above article implies, this configuration is **not** truly confidential, but merely for experimentation.
