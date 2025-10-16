@@ -6,7 +6,7 @@ This repository provides an automated setup to get started testing [confidential
 
 To get started quickly, fork this repository and create a codespaces instance. In a few short moments you should be able to run the setup script (./start-demo) in the new codespace. From there you can install the necessary components all at once by selecting `Full Send!` or step by step.
 
-If you don't have access to remote codespaces, this demonstration can be run locally as well using VSCode, the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), and a container runtime.
+If you don't have access to remote codespaces, this demonstration can be run locally as well using VSCode, the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), and a container runtime. Just make sure that SELinux is not enabled.
 
 ## Overview
 

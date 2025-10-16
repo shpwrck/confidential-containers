@@ -20,4 +20,6 @@ spec:
   name: cc-operator
   source: operatorhubio-catalog
   sourceNamespace: olm
+  startingCSV: cc-operator.v0.12.0
+  installPlanApproval: Manual
 ...

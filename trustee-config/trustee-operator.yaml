@@ -20,4 +20,6 @@ spec:
   name: trustee-operator
   source: operatorhubio-catalog
   sourceNamespace: olm
+  startingCSV: trustee-operator.v0.4.0
+  installPlanApproval: Manual
 ...

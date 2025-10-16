@@ -52,13 +52,17 @@ olm_installed() {
 
 install_olm() {
 	echo "Installing Operator Lifecycle Manager..."
-	gum spin --title "(1/2) Installing Operator Lifecycle Manager CRDs" -- \
+	gum spin --title "(1/3) Installing Operator Lifecycle Manager CRDs" -- \
 		bash -c "kubectl apply -f ./cluster-config/crds.yaml --wait"
 	gum format -t emoji ":white_check_mark: Operator Lifecycle Manager CRDs Installed!"
-	gum spin --title "(2/2) Installing Operator Lifecycle Manager" -- \
+	gum spin --title "(2/3) Installing Operator Lifecycle Manager" -- \
 		bash -c "kubectl apply -f ./cluster-config/olm.yaml --wait"
 	gum format -t emoji ":white_check_mark: Operator Lifecycle Manager Deployed!"
-	gum format -t emoji ":white_check_mark: Operator Lifecycle Manager Installed!"
+	gum spin --title "(3/3) Waiting for OLM to be ready..." -- \
+		bash -c "kubectl wait --for=condition=Available --timeout=120s deployment/olm-operator -n olm && \
+			kubectl wait --for=condition=Available --timeout=120s deployment/catalog-operator -n olm && \
+			kubectl wait --for=condition=Available --timeout=120s deployment/packageserver -n olm"
+	gum format -t emoji ":white_check_mark: Operator Lifecycle Manager Ready!"
 	sleep 2
 }
 
@@ -69,14 +73,20 @@ coco_installed() {
 
 install_coco_operator() {
 	echo "Installing Confidential Containers Operator..."
-	gum spin --title "(1/3) Installing Confidential Containers Operator" -- \
+	gum spin --title "(1/5) Installing Confidential Containers Operator" -- \
 		bash -c "kubectl apply -f ./coco-config/coco-operator.yaml --wait"
 	gum format -t emoji ":white_check_mark: Confidential Containers Operator Deployment Created!"
+	gum spin --title "(2/5) Waiting for install plan to be created..." -- \
+		bash -c 'kubectl wait --for=create installplan -n confidential-containers-system  -l operators.coreos.com/cc-operator.confidential-containers-system="" && sleep 2'
+	gum format -t emoji ":white_check_mark: Install Plan Created!"
+	gum spin --title "(3/5) Approving install plan..." -- \
+		bash -c "kubectl patch $(kubectl get installplans.operators.coreos.com -n confidential-containers-system -o name) -n confidential-containers-system --type='json' -p '[{\"op\":\"replace\",\"path\":\"/spec/approved\",\"value\":true}]'"
+	gum format -t emoji ":white_check_mark: Install Plan Approved!"
 	while ! quiet_exec kubectl get deployment cc-operator-controller-manager -n confidential-containers-system; do
-		gum spin --title "(2/3) Waiting for coco-operator deployment to be created..." -- sleep 5
+		gum spin --title "(4/5) Waiting for coco-operator deployment to be created..." -- sleep 5
 	done
 	gum format -t emoji ":white_check_mark: Confidential Containers Operator Deployment Found!"
-	gum spin --title "(3/3) Waiting for coco-operator to be ready..." -- \
+	gum spin --title "(5/5) Waiting for coco-operator to be ready..." -- \
 		bash -c "kubectl wait --for=condition=Available --timeout=120s deployment/cc-operator-controller-manager -n confidential-containers-system"
 	gum format -t emoji ":white_check_mark: Confidential Containers Operator Ready!"
 	sleep 2
@@ -139,14 +149,20 @@ trustee_operator_installed() {
 
 install_trustee_operator() {
 	echo "Installing Trustee Operator..."
-	gum spin --title "(1/3) Installing Trustee Operator" -- \
+	gum spin --title "(1/5) Installing Trustee Operator" -- \
 		bash -c "kubectl apply -f ./trustee-config/trustee-operator.yaml --wait"
 	gum format -t emoji ":white_check_mark: Trustee Operator Created!"
+	gum spin --title "(2/5) Waiting for install plan to be created..." -- \
+		bash -c 'kubectl wait --for=create installplan -n trustee-system  -l operators.coreos.com/trustee-operator.trustee-system="" && sleep 2'
+	gum format -t emoji ":white_check_mark: Install Plan Created!"
+	gum spin --title "(3/5) Approving install plan..." -- \
+		bash -c "kubectl patch $(kubectl get installplans.operators.coreos.com -n trustee-system -o name) -n trustee-system --type='json' -p '[{\"op\":\"replace\",\"path\":\"/spec/approved\",\"value\":true}]'"
+	gum format -t emoji ":white_check_mark: Install Plan Approved!"	
 	while ! quiet_exec kubectl get deployment trustee-operator-controller-manager -n trustee-system; do
-		gum spin --title "(2/3) Waiting for trustee-operator deployment to be created..." -- sleep 5
+		gum spin --title "(4/5) Waiting for trustee-operator deployment to be created..." -- sleep 5
 	done
 	gum format -t emoji ":white_check_mark: Trustee Operator Deployment Found!"
-	gum spin --title "(3/3) Waiting for trustee-operator to be ready..." -- \
+	gum spin --title "(5/5) Waiting for trustee-operator to be ready..." -- \
 		bash -c "kubectl wait --for=condition=Available --timeout=120s deployment/trustee-operator-controller-manager -n trustee-system"
 	gum format -t emoji ":white_check_mark: Trustee Operator Ready!"
 	sleep 2
