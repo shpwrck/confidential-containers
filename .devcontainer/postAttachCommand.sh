@@ -449,7 +449,9 @@ main() {
 				;;
 			Restart\ ContainerD)
 				gum spin --title "Restarting ContainerD..." -- sleep 2
+				docker exec -it coco-test-control-plane bash -c "ctr -n k8s.io content fetch docker.io/library/busybox:stable-uclibc"
 				docker exec -it coco-test-control-plane bash -c "systemctl restart containerd"
+				clear
 				print_banner
 				;;
 			Run\ K9S)
