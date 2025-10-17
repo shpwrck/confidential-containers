@@ -77,7 +77,7 @@ install_coco_operator() {
 		bash -c "kubectl apply -f ./coco-config/coco-operator.yaml --wait"
 	gum format -t emoji ":white_check_mark: Confidential Containers Operator Deployment Created!"
 	gum spin --title "(2/5) Waiting for install plan to be created..." -- \
-		bash -c 'kubectl wait --for=create installplan -n confidential-containers-system  -l operators.coreos.com/cc-operator.confidential-containers-system="" && sleep 2'
+		bash -c 'kubectl wait --for=create installplan -n confidential-containers-system  -l operators.coreos.com/cc-operator.confidential-containers-system="" && sleep 5'
 	gum format -t emoji ":white_check_mark: Install Plan Created!"
 	gum spin --title "(3/5) Approving install plan..." -- \
 		bash -c "kubectl patch $(kubectl get installplans.operators.coreos.com -n confidential-containers-system -o name) -n confidential-containers-system --type='json' -p '[{\"op\":\"replace\",\"path\":\"/spec/approved\",\"value\":true}]'"
@@ -153,7 +153,7 @@ install_trustee_operator() {
 		bash -c "kubectl apply -f ./trustee-config/trustee-operator.yaml --wait"
 	gum format -t emoji ":white_check_mark: Trustee Operator Created!"
 	gum spin --title "(2/5) Waiting for install plan to be created..." -- \
-		bash -c 'kubectl wait --for=create installplan -n trustee-system  -l operators.coreos.com/trustee-operator.trustee-system="" && sleep 2'
+		bash -c 'kubectl wait --for=create installplan -n trustee-system  -l operators.coreos.com/trustee-operator.trustee-system="" && sleep 5'
 	gum format -t emoji ":white_check_mark: Install Plan Created!"
 	gum spin --title "(3/5) Approving install plan..." -- \
 		bash -c "kubectl patch $(kubectl get installplans.operators.coreos.com -n trustee-system -o name) -n trustee-system --type='json' -p '[{\"op\":\"replace\",\"path\":\"/spec/approved\",\"value\":true}]'"
@@ -309,10 +309,10 @@ show_menu() {
 		Install Operator Lifecycle Manager,$( olm_installed )
 		Install Confidential Containers Operator,$( coco_installed )
 		Install Confidential Container Runtime,$( ccr_installed )
-		Test Runtime,$( coco_demo_01 )
-		Test Runtime With Policy,$( coco_demo_02 )
 		Install Trustee Operator,$( trustee_operator_installed )
 		Install Trustee Instance,$( trustee_instance_installed )
+		Test Runtime,$( coco_demo_01 )
+		Test Runtime With Policy,$( coco_demo_02 )
 		Test Trustee Connection,$( coco_demo_03 )
 		Test Trustee Secret,$( coco_demo_04 )
 		Test Trustee Secret Policy,$( coco_demo_05 )
@@ -344,10 +344,10 @@ main() {
 				install_olm
 				install_coco_operator
 				install_ccr
-				install_coco_demo_01
-				install_coco_demo_02
 				install_trustee_operator
 				install_trustee_instance
+				install_coco_demo_01
+				install_coco_demo_02
 				install_coco_demo_03
 				install_coco_demo_04
 				install_coco_demo_05
@@ -391,24 +391,6 @@ main() {
 					print_banner
 				fi
 				;;
-			Test\ Runtime)
-				if quiet_exec coco_demo_01; then
-					gum spin --title "Demo 01 is already installed." -- sleep 2
-				else
-					install_coco_demo_01
-					clear
-					print_banner
-				fi
-				;;
-			Test\ Runtime\ With\ Policy)
-				if quiet_exec coco_demo_02; then
-					gum spin --title "Demo 02 is already installed." -- sleep 2
-				else
-					install_coco_demo_02
-					clear
-					print_banner
-				fi
-				;;
 			Install\ Trustee\ Operator)
 				if quiet_exec trustee_operator_installed; then
 					gum spin --title "Trustee Operator is already installed." -- sleep 2
@@ -423,6 +405,24 @@ main() {
 					gum spin --title "Trustee Instance is already installed." -- sleep 2
 				else
 					install_trustee_instance
+					clear
+					print_banner
+				fi
+				;;
+			Test\ Runtime)
+				if quiet_exec coco_demo_01; then
+					gum spin --title "Demo 01 is already installed." -- sleep 2
+				else
+					install_coco_demo_01
+					clear
+					print_banner
+				fi
+				;;
+			Test\ Runtime\ With\ Policy)
+				if quiet_exec coco_demo_02; then
+					gum spin --title "Demo 02 is already installed." -- sleep 2
+				else
+					install_coco_demo_02
 					clear
 					print_banner
 				fi
@@ -472,6 +472,7 @@ main() {
 				;;
 			Run\ K9S)
 				k9s
+				clear
 				print_banner
 				;;
 			Clean\ Up\ Cluster)

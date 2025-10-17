@@ -23,6 +23,10 @@ The general process for this demonstration is:
 
 ![Architecture](Architecture.svg)
 
+## Install Overview
+
+![vhs-tapes](./vhs-tapes/install-all.gif)
+
 ## Demo Overview
 
 ### Demo 1: Alternative Runtime
