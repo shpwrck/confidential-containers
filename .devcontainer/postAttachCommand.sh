@@ -480,7 +480,8 @@ main() {
 			*)
 				clear
 				gum style --border double --margin "1" --padding "1 2" --border-foreground "2" \
-					"Thank you for using the $(gum style --foreground 3 'Confidential Containers Demo')."
+					"Thank you for using the " \
+					"$(gum style --foreground 3 'Confidential Containers Demo')."
 				break
 				;;
 		esac

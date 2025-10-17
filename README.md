@@ -29,6 +29,8 @@ The general process for this demonstration is:
 
 ## Demo Overview
 
+![vhs-tapes](./vhs-tapes/demo-all.gif)
+
 ### Demo 1: Alternative Runtime
 
 Demonstrates that a runtime other than containerd can successfully provision a workload.
