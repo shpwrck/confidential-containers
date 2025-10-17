@@ -6,7 +6,7 @@ metadata:
   namespace: default
   annotations:
     io.containerd.cri.runtime-handler: "kata-qemu-coco-dev"
-    io.katacontainers.config.hypervisor.kernel_params: " agent.aa_kbc_params=cc_kbc::http://${KBS_HOST}:${KBS_PORT}"
+    io.katacontainers.config.hypervisor.kernel_params: " agent.guest_components_rest_api=all agent.aa_kbc_params=cc_kbc::http://${KBS_HOST}:${KBS_PORT}"
 spec:
   runtimeClassName: kata-qemu-coco-dev
   containers:
@@ -14,7 +14,9 @@ spec:
       image: busybox:stable-uclibc
       imagePullPolicy: Always
       command:
-        - sleep
-        - "infinity"
+        - sh
+        - -c
+        - |
+          wget -O- http://127.0.0.1:8006/aa/token\?token_type\=kbs 2>&1; sleep infinity
   restartPolicy: Never
 ...

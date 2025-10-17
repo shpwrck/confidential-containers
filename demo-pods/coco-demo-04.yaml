@@ -17,6 +17,6 @@ spec:
         - sh
         - -c
         - |
-          wget -O- http://127.0.0.1:8006/cdh/resource/default/secret/1; sleep infinity   
+          wget -O- http://127.0.0.1:8006/cdh/resource/default/secret/1; sleep infinity
   restartPolicy: Never
 ...

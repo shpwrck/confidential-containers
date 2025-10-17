@@ -17,10 +17,10 @@ spec:
         - sh
         - -c
         - |
-          env | grep PROTECTED_SECRET
+          env | grep SEALED_SECRET
           sleep infinity
       env:
-      - name: PROTECTED_SECRET
+      - name: SEALED_SECRET
         valueFrom:
           secretKeyRef:
             name: sealed-secret

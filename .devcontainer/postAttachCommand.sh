@@ -32,6 +32,7 @@ install_kind() {
 	gum spin --title "(1/1) Creating Kind Cluster" -- \
 		bash -c "kind create cluster --config ./cluster-config/kind-config.yaml"
 	gum format -t emoji ":white_check_mark: Kind Cluster Created!"
+	quiet_exec docker exec -it coco-test-control-plane bash -c "ctr -n k8s.io content fetch docker.io/library/busybox:stable-uclibc"
 	sleep 2
 }
 
@@ -115,33 +116,6 @@ coco_demo_01() {
 	validate_command $?
 }
 
-install_coco_demo_01() {
-	echo "Installing CoCo Demo 01..."
-	gum spin --title "(1/2) Installing CoCo Demo 01" -- \
-		bash -c "kubectl apply -f ./demo-pods/coco-demo-01.yaml"
-	gum format -t emoji ":white_check_mark: Demo 01 Deployment Created!"
-	gum spin --title "(2/2) Waiting for CoCo Demo 01 to be running..." --timeout 60s -- \
-		bash -c "kubectl wait --for=condition=Ready --timeout=120s pod/coco-demo-01 -n default"
-	gum format -t emoji ":white_check_mark: Demo 01 Ready!"
-	sleep 2
-}
-
-coco_demo_02() {
-	quiet_exec kubectl get pod coco-demo-02 -n default
-	validate_command $?
-}
-
-install_coco_demo_02() {
-	echo "Installing CoCo Demo 02..."
-	gum spin --title "(1/2) Installing CoCo Demo 02" -- \
-		bash -c "kubectl apply -f ./demo-pods/coco-demo-02.yaml"
-	gum format -t emoji ":white_check_mark: Demo 02 Deployment Created!"
-	gum spin --title "(2/2) Waiting for CoCo Demo 02 to be running..." --timeout 60s -- \
-		bash -c "kubectl wait --for=condition=Ready --timeout=120s pod/coco-demo-02 -n default"
-	gum format -t emoji ":white_check_mark: Demo 02 Ready!"
-	sleep 2
-}
-
 trustee_operator_installed() {
 	quiet_exec kubectl get deployment trustee-operator-controller-manager -n trustee-system
 	validate_command $?
@@ -196,6 +170,33 @@ install_trustee_instance() {
 	gum spin --title "Waiting for Trustee Instance to be ready..." -- \
 		bash -c "kubectl wait --for=condition=Available --timeout=120s deployment/trustee-operator-controller-manager -n trustee-system"
 	gum format -t emoji ":white_check_mark: Trustee Instance Ready!"
+	sleep 2
+}
+
+install_coco_demo_01() {
+	echo "Installing CoCo Demo 01..."
+	gum spin --title "(1/2) Installing CoCo Demo 01" -- \
+		bash -c "kubectl apply -f ./demo-pods/coco-demo-01.yaml"
+	gum format -t emoji ":white_check_mark: Demo 01 Deployment Created!"
+	gum spin --title "(2/2) Waiting for CoCo Demo 01 to be running..." --timeout 60s -- \
+		bash -c "kubectl wait --for=condition=Ready --timeout=120s pod/coco-demo-01 -n default"
+	gum format -t emoji ":white_check_mark: Demo 01 Ready!"
+	sleep 2
+}
+
+coco_demo_02() {
+	quiet_exec kubectl get pod coco-demo-02 -n default
+	validate_command $?
+}
+
+install_coco_demo_02() {
+	echo "Installing CoCo Demo 02..."
+	gum spin --title "(1/2) Installing CoCo Demo 02" -- \
+		bash -c "kubectl apply -f ./demo-pods/coco-demo-02.yaml"
+	gum format -t emoji ":white_check_mark: Demo 02 Deployment Created!"
+	gum spin --title "(2/2) Waiting for CoCo Demo 02 to be running..." --timeout 60s -- \
+		bash -c "kubectl wait --for=condition=Ready --timeout=120s pod/coco-demo-02 -n default"
+	gum format -t emoji ":white_check_mark: Demo 02 Ready!"
 	sleep 2
 }
 
@@ -318,7 +319,6 @@ show_menu() {
 		Test Trustee Secret Policy,$( coco_demo_05 )
 		Test Sealed Secrets,$( coco_demo_06 )
 		----------------------------,--
-		Restart ContainerD,$(echo ':wrench:' | gum format -t emoji)
 		Run K9S,$(echo ':dog:' | gum format -t emoji)
 		Clean Up Cluster,$(echo ':wastebasket:' | gum format -t emoji)
 		Finish,$(echo ':checkered_flag:' | gum format -t emoji)
@@ -462,13 +462,6 @@ main() {
 					clear
 					print_banner
 				fi
-				;;
-			Restart\ ContainerD)
-				gum spin --title "Restarting ContainerD..." -- sleep 2
-				docker exec -it coco-test-control-plane bash -c "ctr -n k8s.io content fetch docker.io/library/busybox:stable-uclibc"
-				docker exec -it coco-test-control-plane bash -c "systemctl restart containerd"
-				clear
-				print_banner
 				;;
 			Run\ K9S)
 				k9s
