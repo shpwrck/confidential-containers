@@ -63,9 +63,7 @@ Sleep 1
 Ctrl+U
 Type 'kubectl get pod -l app.kubernetes.io/name=dra-example-driver -n dra-tutoral'
 Enter
-Sleep 4
-Wait+Screen@30s /Running!/
-Sleep 2
+Sleep 20
 Ctrl+U
 Type "The DRA driver updates the local node on which devices are available through a ResourceSlice"
 Type "Let's look at the ResourceSlice"
@@ -77,7 +75,7 @@ Sleep 2
 Type "Create a ResourceClaim to claim the DeviceClass"
 Sleep 1
 Ctrl+U
-Type 'kubectl apply --server-side -f ./dra-config/resourceclaim.yaml'
+Type 'kubectl apply --server-side -f ../dra-config/resourceclaim.yaml'
 Enter
 Sleep 2
 Type "The components to use DRA are now created"
@@ -89,13 +87,13 @@ Ctrl+U
 Type "Let's take a look at the Pod's manifest first"
 Sleep 1
 Ctrl+U
-Type 'head -n 11 ./dra-config/coco-dra-pod.yaml'
+Type 'head -n 11 ../dra-config/coco-dra-pod.yaml'
 Enter
 Sleep 1
 Type "In the Pod manifest we see the Pod using the kata-qemu-coco-dev runtime"
 Sleep 2
 Ctrl+U
-Type 'tail -n 6 ./dra-config/coco-dra-pod.yaml'
+Type 'tail -n 6 ../dra-config/coco-dra-pod.yaml'
 Enter
 Sleep 2
 Type "The Pod references the ResourceClaim previously created"
@@ -104,7 +102,7 @@ Ctrl+U
 Type "Create the Pod"
 Sleep 1
 Ctrl+U
-Type 'kubectl apply --server-side -f ./dra-config/coco-dra-pod.yaml'
+Type 'kubectl apply --server-side -f ../dra-config/coco-dra-pod.yaml'
 Enter
 Sleep 5
 Ctrl+U
@@ -114,5 +112,3 @@ Ctrl+U
 Type 'kubectl logs pod0 -n dra-tutorial | grep -E "GPU_DEVICE_[0-9]+=" | grep -v "RESOURCE_CLAIM"'
 Enter
 Sleep 2
-
-
