@@ -1,2 +1,3 @@
 *.pem
 guest-components/
+.DS_Store
