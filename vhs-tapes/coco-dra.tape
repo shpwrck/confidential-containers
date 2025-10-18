@@ -50,6 +50,7 @@ Sleep 1
 Ctrl+U
 Type 'head -n 27 ../dra-config/dra-driver-daemonset.yaml'
 Enter
+Sleep 10
 Ctrl+U
 Type "Create the DRA driver in a DaemonSet, the driver binary is in a container image"
 Sleep 1
@@ -61,7 +62,7 @@ Ctrl+U
 Type "Verify the DRA is installed"
 Sleep 1
 Ctrl+U
-Type 'kubectl get pod -l app.kubernetes.io/name=dra-example-driver -n dra-tutoral'
+Type 'kubectl get pod -l app.kubernetes.io/name=dra-example-driver -n dra-tutorial'
 Enter
 Sleep 20
 Ctrl+U
@@ -106,9 +107,10 @@ Type 'kubectl apply --server-side -f ../dra-config/coco-dra-pod.yaml'
 Enter
 Sleep 5
 Ctrl+U
-Type "Check the Pod logs to report the name of the example GPU"
+Type "Check if the ResourceClaim is used"
 Sleep 1
 Ctrl+U
-Type 'kubectl logs pod0 -n dra-tutorial | grep -E "GPU_DEVICE_[0-9]+=" | grep -v "RESOURCE_CLAIM"'
+Type 'kubectl get resourceclaim'
 Enter
-Sleep 2
+Sleep 4
+Ctrl+U
