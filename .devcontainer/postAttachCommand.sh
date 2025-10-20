@@ -127,7 +127,7 @@ install_trustee_operator() {
 		bash -c "kubectl apply -f ./trustee-config/trustee-operator.yaml --wait"
 	gum format -t emoji ":white_check_mark: Trustee Operator Created!"
 	gum spin --title "(2/5) Waiting for install plan to be created..." -- \
-		bash -c 'kubectl wait --for=create installplan -n trustee-system  -l operators.coreos.com/trustee-operator.trustee-system="" && sleep 5'
+		bash -c 'kubectl wait --for=create installplan -n trustee-system  -l operators.coreos.com/trustee-operator.trustee-system="" --timeout=600s'
 	gum format -t emoji ":white_check_mark: Install Plan Created!"
 	gum spin --title "(3/5) Approving install plan..." -- \
 		bash -c "kubectl patch $(kubectl get installplans.operators.coreos.com -n trustee-system -o name) -n trustee-system --type='json' -p '[{\"op\":\"replace\",\"path\":\"/spec/approved\",\"value\":true}]'"
