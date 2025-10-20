@@ -54,10 +54,10 @@ olm_installed() {
 install_olm() {
 	echo "Installing Operator Lifecycle Manager..."
 	gum spin --title "(1/3) Installing Operator Lifecycle Manager CRDs" -- \
-		bash -c "kubectl apply -f ./cluster-config/crds.yaml --wait"
+		bash -c "kubectl apply -f ./cluster-config/crds.yaml --wait && sleep 5"
 	gum format -t emoji ":white_check_mark: Operator Lifecycle Manager CRDs Installed!"
 	gum spin --title "(2/3) Installing Operator Lifecycle Manager" -- \
-		bash -c "kubectl apply -f ./cluster-config/olm.yaml --wait"
+		bash -c "kubectl apply -f ./cluster-config/olm.yaml --wait && sleep 5"
 	gum format -t emoji ":white_check_mark: Operator Lifecycle Manager Deployed!"
 	gum spin --title "(3/3) Waiting for OLM to be ready..." -- \
 		bash -c "kubectl wait --for=condition=Available --timeout=120s deployment/olm-operator -n olm && \
@@ -78,9 +78,8 @@ install_coco_operator() {
 		bash -c "kubectl apply -f ./coco-config/coco-operator.yaml --wait"
 	gum format -t emoji ":white_check_mark: Confidential Containers Operator Deployment Created!"
 	gum spin --title "(2/5) Waiting for install plan to be created..." -- \
-		bash -c 'kubectl wait --for=create installplan -n confidential-containers-system  -l operators.coreos.com/cc-operator.confidential-containers-system="" && sleep 5'
+		bash -c 'kubectl wait --for=create installplan -n confidential-containers-system  -l operators.coreos.com/cc-operator.confidential-containers-system="" --timeout=600s'
 	gum format -t emoji ":white_check_mark: Install Plan Created!"
-	sleep 2
 	gum spin --title "(3/5) Approving install plan..." -- \
 		bash -c "kubectl patch $(kubectl get installplans.operators.coreos.com -n confidential-containers-system -o name) -n confidential-containers-system --type='json' -p '[{\"op\":\"replace\",\"path\":\"/spec/approved\",\"value\":true}]'"
 	gum format -t emoji ":white_check_mark: Install Plan Approved!"
