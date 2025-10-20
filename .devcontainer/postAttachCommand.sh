@@ -80,6 +80,7 @@ install_coco_operator() {
 	gum spin --title "(2/5) Waiting for install plan to be created..." -- \
 		bash -c 'kubectl wait --for=create installplan -n confidential-containers-system  -l operators.coreos.com/cc-operator.confidential-containers-system="" && sleep 5'
 	gum format -t emoji ":white_check_mark: Install Plan Created!"
+	sleep 2
 	gum spin --title "(3/5) Approving install plan..." -- \
 		bash -c "kubectl patch $(kubectl get installplans.operators.coreos.com -n confidential-containers-system -o name) -n confidential-containers-system --type='json' -p '[{\"op\":\"replace\",\"path\":\"/spec/approved\",\"value\":true}]'"
 	gum format -t emoji ":white_check_mark: Install Plan Approved!"
