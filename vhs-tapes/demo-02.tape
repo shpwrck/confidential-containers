@@ -68,22 +68,25 @@ Type "Notice 'ExecProcessRequest is blocked by policy'"
 Sleep 2
 Ctrl+U
 
-Type "We added a policy to this workload under annotations"
+Type "To accomplish this, we added a policy to this workload under annotations"
 Sleep 2
 Ctrl+U
 
-Type "cat demo-pods/coco-demo-02.yaml | grep --color=auto -B 2 io.katacontainers.config.agent.policy"
+Type "cat demo-pods/coco-demo-02.yaml | grep --color=auto -B 2 io.katacontainers.config.agent.policy | cut -c 1-80"
 Sleep 2
 Enter
 
-Type "We can see that policy by decoding the annotation's value"
+Type "We can see that policy by decoding the annotation's full value"
 Sleep 2
 Ctrl+U
 
-Type "cat demo-pods/coco-demo-02.yaml | grep -B 2 io.katacontainers.config.agent.policy | yq '.annotations."io.katacontainers.config.agent.policy"' | base64 -d"
+Type "cat demo-pods/coco-demo-02.yaml | grep -B 2 io.katacontainers.config.agent.policy | yq .annotations.io*katacontainers*config*agent*policy | base64 -d"
 Sleep 2
 Enter
 
 Type "Notice: 'default ExecProcessRequest := false'"
 Sleep 2
 Ctrl+U
+
+Type "Try modifying the policy and seeing the results."
+Sleep 2
