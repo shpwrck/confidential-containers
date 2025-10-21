@@ -11,14 +11,14 @@ spec:
   runtimeClassName: kata-qemu-coco-dev
   containers:
   - name: ctr0
-    #image: busybox:stable-uclibc
-    #imagePullPolicy: Always
-    #command:
-      #- sleep
-      #- "infinity"
-    image: ubuntu:24.04
-    command: ["bash", "-c"]
-    args: ["export; trap 'exit 0' TERM; sleep 9999 & wait"]
+    image: busybox:stable-uclibc
+    imagePullPolicy: Always
+    command:
+      - sleep
+      - "infinity"
+    #image: ubuntu:24.04
+    #command: ["bash", "-c"]
+    #args: ["export; trap 'exit 0' TERM; sleep 9999 & wait"]
     resources:
       claims:
       - name: gpu

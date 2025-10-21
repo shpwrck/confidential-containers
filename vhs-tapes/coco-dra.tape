@@ -14,6 +14,7 @@ Type "Create the Namespace dra-tutorial"
 Sleep 1
 Ctrl+U
 Type "kubectl create namespace dra-tutorial"
+Sleep 1
 Enter
 Sleep 2
 Ctrl+U
@@ -25,10 +26,12 @@ Sleep 1
 Enter
 Type "clear"
 Sleep 1
+Enter
 Type "Create the RBAC resources used by the DRA driver to interact with the Kubernetes API"
 Sleep 1
 Ctrl+U
 Type "kubectl apply --server-side -f ../dra-config/serviceaccount.yaml"
+Sleep 1
 Enter
 Sleep 2
 Type "kubectl apply --server-side -f ../dra-config/clusterrole.yaml"
@@ -70,16 +73,18 @@ Sleep 1
 Enter
 Sleep 3
 Type "clear"
-Sleep 1 
+Sleep 1
 Enter
-Type "Verify the DRA is installed"
+Type "Verify the DRA driver running in a DaemonSet is installed"
 Sleep 1
 Ctrl+U
 Type "kubectl get pod -l app.kubernetes.io/name=dra-example-driver -n dra-tutorial"
 Sleep 1
 Enter
-Sleep 10
-Ctrl+U
+Sleep 1
+Type "clear"
+Sleep 1
+Enter 
 Type "The DRA driver updates the local node on which devices are available through a ResourceSlice"
 Sleep 1
 Ctrl+U
@@ -92,7 +97,7 @@ Enter
 Sleep 2
 Type "Describe the ResourceSlice to see information of the devices on the node"
 Sleep 1
-Type "clear"
+Ctrl+U
 Sleep 1
 Enter
 Type "kubectl describe $(kubectl get resourceslice -o name)"
@@ -143,7 +148,6 @@ Sleep 1
 Enter
 Sleep 2
 Type "clear"
-Sleep 1
 Enter
 Type "The Pod references the ResourceClaim previously created"
 Sleep 2
@@ -154,18 +158,11 @@ Ctrl+U
 Type 'kubectl apply --server-side -f ../dra-config/coco-dra-pod.yaml'
 Sleep 1
 Enter
-Sleep 8
-Ctrl+U
+Sleep 10
 Type "Check if the ResourceClaim is used"
 Sleep 1
 Ctrl+U
 Type 'kubectl get resourceclaim -n dra-tutorial'
+Sleep 1
 Enter
 Sleep 5
-Ctrl+U
-Type "Check the Pod logs to report the name of the example GPU"
-Sleep 1
-Type 'kubectl logs pod0 -n dra-tutorial | grep -E "GPU_DEVICE_[0-9]+=" | grep -v "RESOURCE_CLAIM"'
-Enter 
-Sleep 3
-Ctrl+U
