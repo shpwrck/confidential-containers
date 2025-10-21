@@ -79,7 +79,7 @@ Sleep 1
 Ctrl+U
 Type 'kubectl describe $(kubectl get resourceslice -o name)'
 Enter
-Sleep 3
+Sleep 5
 Ctrl+U 
 Type "Create a ResourceClaim to claim the DeviceClass"
 Sleep 1
@@ -132,7 +132,7 @@ Sleep 4
 Ctrl+U
 Type "Check the Pod logs to report the name of the example GPU"
 Sleep 1
-Type 'kubectl logs coco-dra-pod -n dra-tutorial | grep -E "GPU_DEVICE_[0-9]+=" | grep -v "RESOURCE_CLAIM"`'
+Type 'kubectl logs pod0 -n dra-tutorial | grep -E "GPU_DEVICE_[0-9]+=" | grep -v "RESOURCE_CLAIM"'
 Enter 
 Sleep 2
 Ctrl+U
