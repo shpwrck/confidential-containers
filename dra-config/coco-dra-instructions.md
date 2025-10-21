@@ -25,11 +25,18 @@
 8. Create a ResourceClaim to claim the DeviceClass
 `kubectl apply --server-side -f /workspaces/confidential-containers/dra-config/resourceclaim.yaml`
 
-9. Create a CoCo Pod that references the ResourceClaim to use the DRA driver
+9. Verify the ResourceClaim
+`kubectl get resourceclaim -n dra-tutorial`
+
+10. Create a CoCo Pod that references the ResourceClaim to use the DRA driver
 `kubectl apply --server-side -f /workspaces/confidential-containers/dra-config/coco-dra-pod.yaml`
 
+10. Check the ResourceClaim
+
+
+Extra:
 10. Check the Pod logs to report the name of the example GPU
-`kubectl logs coco-dra-pod -n dra-tutorial | grep -E "GPU_DEVICE_[0-9]+=" | grep -v "RESOURCE_CLAIM"`
+`kubectl logs pod0 -n dra-tutorial | grep -E "GPU_DEVICE_[0-9]+=" | grep -v "RESOURCE_CLAIM"`
 
 Expected output:
 ```
