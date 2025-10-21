@@ -82,7 +82,7 @@ Sleep 2
 Type "Verify the ResourceClaim is created"
 Sleep 1
 Ctrl+U
-Type 'kubectl get resourceclaim'
+Type 'kubectl get resourceclaim -n dra-tutorial'
 Enter
 Sleep 2
 Ctrl+U
@@ -104,6 +104,7 @@ Ctrl+U
 Type 'tail -n 6 ../dra-config/coco-dra-pod.yaml'
 Enter
 Sleep 2
+Ctrl+U
 Type "The Pod references the ResourceClaim previously created"
 Sleep 2
 Ctrl+U
@@ -117,7 +118,7 @@ Ctrl+U
 Type "Check if the ResourceClaim is used"
 Sleep 1
 Ctrl+U
-Type 'kubectl get resourceclaim'
+Type 'kubectl get resourceclaim -n dra-tutorial'
 Enter
 Sleep 4
 Ctrl+U
