@@ -79,6 +79,13 @@ Ctrl+U
 Type 'kubectl apply --server-side -f ../dra-config/resourceclaim.yaml'
 Enter
 Sleep 2
+Type "Verify the ResourceClaim is created"
+Sleep 1
+Ctrl+U
+Type 'kubectl get resourceclaim'
+Enter
+Sleep 2
+Ctrl+U
 Type "The components to use DRA are now created"
 Sleep 1
 Ctrl+U

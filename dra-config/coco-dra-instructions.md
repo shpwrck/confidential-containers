@@ -1,11 +1,11 @@
 1. Create the `dra-tutorial` namespace
 `kubectl create namespace dra-tutorial`
 
-2. Create the DRA driver in a Daemonset, the driver binary is in a container image
-`kubectl apply --server-side -f /workspaces/confidential-containers/dra-config/dra-driver-daemonset.yaml`
+2. Create the DeviceClass that represents the supported devices of the DRA driver
+`kubectl apply --server-side -f /workspaces/confidential-containers/dra-config/deviceclass.yaml`
 
-3. Verify installation
-`kubectl get pod -l app.kubernetes.io/name=dra-example-driver -n dra-tutorial`
+3. The DRA driver updates the local node on which devices are available through a ResourceSlice
+`kubectl get resourceslice`
 
 
 4. Create the RBAC resources used by the DRA driver to interact with the Kubernetes API
@@ -13,15 +13,14 @@
 `kubectl apply --server-side -f /workspaces/confidential-containers/dra-config/clusterrole.yaml`
 `kubectl apply --server-side -f /workspaces/confidential-containers/dra-config/crb.yaml`
 
-4. Create the PriorityClass to prevent preemption of the DRA driver
+5. Create the PriorityClass to prevent preemption of the DRA driver
 `kubectl apply --server-side -f /workspaces/confidential-containers/dra-config/priorityclass.yaml`
 
-6. Create the DeviceClass that represents the supported devices of the DRA driver
-`kubectl apply --server-side -f /workspaces/confidential-containers/dra-config/deviceclass.yaml`
+6. Create the DRA driver in a Daemonset, the driver binary is in a container image
+`kubectl apply --server-side -f /workspaces/confidential-containers/dra-config/dra-driver-daemonset.yaml`
 
-
-7. The DRA driver updates the local node on which devices are available through a ResourceSlice
-`kubectl get resourceslice`
+7. Verify installation
+`kubectl get pod -l app.kubernetes.io/name=dra-example-driver -n dra-tutorial`
 
 8. Create a ResourceClaim to claim the DeviceClass
 `kubectl apply --server-side -f /workspaces/confidential-containers/dra-config/resourceclaim.yaml`
